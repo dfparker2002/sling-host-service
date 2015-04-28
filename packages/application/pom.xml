@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd ">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.axis41.software.packages</groupId>
+        <artifactId>packages</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>application</artifactId>
+    <packaging>content-package</packaging>
+
+    <name>Sling Host Service - Packages - Application</name>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.day.jcr.vault</groupId>
+                <artifactId>content-package-maven-plugin</artifactId>
+                
+                <configuration>
+                    <filters>
+                        <filter>
+                            <root>/apps/sling-host-service/components</root>
+                        </filter>
+                        
+                        <filter>
+                            <root>/apps/sling-host-service/templates</root>
+                        </filter>
+                        
+                        <filter>
+                            <root>/etc/clientlibs/sling-host-service</root>
+                        </filter>
+                    </filters>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+
+        <!-- Apache Sling Dependencies -->
+        <dependency>
+            <groupId>com.adobe.aem</groupId>
+            <artifactId>aem-api</artifactId>
+        </dependency>
+
+        <!-- apache sling api in AEM 6.x -->
+        <dependency>
+            <groupId>org.apache.sling</groupId>
+            <artifactId>org.apache.sling.api</artifactId>
+        </dependency>
+        <!-- apache sling jcr api in AEM 6.x -->
+        <dependency>
+            <groupId>org.apache.sling</groupId>
+            <artifactId>org.apache.sling.jcr.api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>org.apache.felix.http.servlet-api</artifactId>
+        </dependency>
+    
+    </dependencies>
+
+    <profiles>
+        <profile>
+            <id>autoInstallPackage</id>
+
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.day.jcr.vault</groupId>
+                        <artifactId>content-package-maven-plugin</artifactId>
+
+                        <executions>
+                            <execution>
+                                <id>install-content-package</id>
+                                <phase>package</phase>
+
+                                <goals>
+                                    <goal>install</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+</project>
