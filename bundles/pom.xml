@@ -4,20 +4,20 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.axis41.software</groupId>
-        <artifactId>sling-host-service</artifactId>
+        <groupId>com.aempodcast.sample</groupId>
+        <artifactId>vhost-builder</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <groupId>com.axis41.software.bundles</groupId>
+    <groupId>com.aempodcast.sample.bundles</groupId>
     <artifactId>bundles</artifactId>
     <packaging>pom</packaging>
 
-    <name>Sling Host Service - Bundles</name>
+    <name>Sling VirtualHost Builder - Bundles</name>
 
     <modules>
-        <module>example-name-service</module>
-        <module>example-name-servlet</module>
+        <module>rewrite-rule-servlet</module>
+        <module>rewrite-rule-service</module>
     </modules>
 
     <build>

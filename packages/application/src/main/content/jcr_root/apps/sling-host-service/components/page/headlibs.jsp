@@ -1,3 +1,5 @@
+<!--suppress XmlUnboundNsPrefix -->
+<!--suppress ALL -->
 <%@include file="/libs/foundation/global.jsp" %>
 
 <cq:includeClientLib categories="cq.foundation-main"/>

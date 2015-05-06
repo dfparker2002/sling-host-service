@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.axis41.software.packages</groupId>
+        <groupId>com.aempodcast.sample.packages</groupId>
         <artifactId>packages</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
@@ -12,7 +12,7 @@
     <artifactId>application</artifactId>
     <packaging>content-package</packaging>
 
-    <name>Sling Host Service - Packages - Application</name>
+    <name>Sling VirtualHost Builder - Packages - Application</name>
 
     <build>
         <plugins>
@@ -23,15 +23,15 @@
                 <configuration>
                     <filters>
                         <filter>
-                            <root>/apps/sling-host-service/components</root>
+                            <root>/apps/vhost-builder/components</root>
                         </filter>
                         
                         <filter>
-                            <root>/apps/sling-host-service/templates</root>
+                            <root>/apps/vhost-builder/templates</root>
                         </filter>
                         
                         <filter>
-                            <root>/etc/clientlibs/sling-host-service</root>
+                            <root>/etc/clientlibs/vhost-builder</root>
                         </filter>
                     </filters>
                 </configuration>

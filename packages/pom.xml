@@ -4,16 +4,16 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.axis41.software</groupId>
-        <artifactId>sling-host-service</artifactId>
+        <groupId>com.aempodcast.sample</groupId>
+        <artifactId>vhost-builder</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <groupId>com.axis41.software.packages</groupId>
+    <groupId>com.aempodcast.sample.packages</groupId>
     <artifactId>packages</artifactId>
     <packaging>pom</packaging>
 
-    <name>Sling Host Service - Packages</name>
+    <name>Sling VirtualHost Builder - Packages</name>
     
     <modules>
     <module>application</module>
@@ -48,14 +48,140 @@
                 <extensions>true</extensions>
 
                 <configuration>
-                    <name>sling-host-service-${project.artifactId}</name>
+                    <name>vhost-builder-${project.artifactId}</name>
                     <targetURL>${crx.serviceUrl}/crx/packmgr/service.jsp</targetURL>
                     <userId>${crx.userId}</userId>
                     <password>${crx.password}</password>
                 </configuration>
             </plugin>
+
+            <!-- https://helpx.adobe.com/experience-manager/using/creating-aem-project-using-intellij.html -->
+            <!--
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/jsps-to-compile</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>src/main/content/jcr_root</directory>
+                                    <excludes>
+                                        <exclude>libs/**</exclude>
+                                    </excludes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.sling</groupId>
+                <artifactId>maven-jspc-plugin</artifactId>
+                <version>2.0.6</version>
+                <executions>
+                    <execution>
+                        <id>compile-jsp</id>
+                        <goals>
+                            <goal>jspc</goal>
+                        </goals>
+                        <configuration>
+                            <jasperClassDebugInfo>false</jasperClassDebugInfo>
+                            <sourceDirectory>${project.build.directory}/jsps-to-compile</sourceDirectory>
+                            <outputDirectory>${project.build.directory}/ignoredjspc</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>remove-compiled-jsps</id>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                        <phase>process-classes</phase>
+                        <configuration>
+                            <excludeDefaultDirectories>true</excludeDefaultDirectories>
+                            <filesets>
+                                <fileset>
+                                    <directory>${project.build.directory}/jsps-to-compile</directory>
+                                    <directory>${project.build.directory}/ignoredjspc</directory>
+                                </fileset>
+                            </filesets>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            -->
         </plugins>
     </build>
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.sling</groupId>
+            <artifactId>org.apache.sling.jcr.jcr-wrapper</artifactId>
+            <!-- javax.jcr -->
+        </dependency>
+        <dependency>
+            <groupId>org.apache.sling</groupId>
+            <artifactId>org.apache.sling.api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.day.cq</groupId>
+            <artifactId>cq-commons</artifactId>
+            <!-- com.day.cq.commons -->
+        </dependency>
+        <dependency>
+            <groupId>com.day.cq.wcm</groupId>
+            <artifactId>cq-wcm-commons</artifactId>
+            <!-- com.day.cq.wcm.commons -->
+        </dependency>
+        <dependency>
+            <groupId>com.day.cq.wcm</groupId>
+            <artifactId>cq-wcm-api</artifactId>
+            <!-- com.day.cq.wcm.api -->
+        </dependency>
+        <dependency>
+            <groupId>com.day.commons</groupId>
+            <artifactId>day-commons-jstl</artifactId>
+            <!-- javax.servlet.jsp.jstl.core -->
+        </dependency>
+        <dependency>
+            <groupId>com.day.cq.wcm</groupId>
+            <artifactId>cq-wcm-taglib</artifactId>
+            <!-- com.day.cq.wcm.tags -->
+        </dependency>
+        <dependency>
+            <groupId>org.apache.sling</groupId>
+            <artifactId>org.apache.sling.scripting.jsp.taglib</artifactId>
+            <!-- org.apache.sling.scripting.jsp.taglib -->
+        </dependency>
+        <dependency>
+            <groupId>com.adobe.granite</groupId>
+            <artifactId>com.adobe.granite.xssprotection</artifactId>
+            <!-- com.adobe.granite.xss -->
+        </dependency>
+        <dependency>
+            <groupId>com.day.cq.wcm</groupId>
+            <artifactId>cq-wcm-core</artifactId>
+            <!-- com.day.cq.wcm.core.components -->
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <!-- org.apache.commons.lang3 -->
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+    </dependencies>
 
     <profiles>
         <profile>

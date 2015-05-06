@@ -1,3 +1,4 @@
+<!--suppress XmlPathReference -->
 <%@include file="/libs/foundation/global.jsp"%>
 
 <body>
