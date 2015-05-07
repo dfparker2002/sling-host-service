@@ -21,7 +21,9 @@ package com.aempodcast.sample;
 import java.io.IOException;
 import java.io.Writer;
 import java.lang.Exception;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 import javax.servlet.ServletException;
 
@@ -56,27 +58,66 @@ public class RewriteRuleServlet extends SlingSafeMethodsServlet {
     protected void doGet(SlingHttpServletRequest request,
             SlingHttpServletResponse response) throws ServletException,
             IOException {
-
-        response.setContentType("application/json;charset=utf-8");
         Writer w = response.getWriter();
-        final Map<String, Map<String, String>> rules;
+        final Map<String, Map<String, String>> allRules = ruleService.getRules();
+
+        String responseType = request.getResponseContentType();
+
+        if (responseType == null) {
+            responseType = "text/plain";  
+        }
+
+        log.debug("Response Type: {}", responseType);
+        response.setContentType(responseType+";charset=utf-8");
+
+        if (responseType.equals("application/json")) {
+            createJsonResponse(w, allRules);
+        } else {
+            Map<String, String> rules = new TreeMap<String, String>();
+            for(String ruleType : allRules.keySet()) {
+                Map<String, String> ruleSet = allRules.get(ruleType);
+                for(String match : ruleSet.keySet()) {
+                    String target = ruleSet.get(match);
+                    if (ruleType.equals("customRules") && ruleService.getMapCustomRules()) {
+                        log.trace("Mapping target {}, found {}", target, request.getResourceResolver().map(target));
+                        target = request.getResourceResolver().map(target);
+                    }
+                    rules.put(match, target);
+                }
+            }
+            createTextResponse(w, rules);
+        }
+    }
+
+    private void createTextResponse(Writer w, Map<String, String> rules) throws IOException {
+            for(String key : rules.keySet()) {
+                w.write("RewriteRule ");
+                w.write(key);
+                w.write(" ");
+                w.write(rules.get(key));
+                w.write(" [PT,L]");
+                w.write(10);
+            }
+    }
+
+    private void createJsonResponse(Writer w, Map<String, Map<String, String>> rules) {
         final JSONObject rulesObj;
         final JSONWriter jw;
 
         try {
-            rules = ruleService.getRules();
             rulesObj = new JSONObject(rules);
+            for (String rwKey : rules.keySet()) {
+                JSONObject jobj = new JSONObject(rules.get(rwKey));
+                rulesObj.put(rwKey, jobj);
+            }
             jw =  new JSONWriter(w)
                     .object()
                     .key("rewriteRules")
-                        .value(rulesObj)
+                    .value(rulesObj)
                     .endObject();
         } catch (Exception ex) {
             log.error("error generating JSON response: ", ex);
         }
-        
-        log.info("RewriteRuleServlet");
-        
     }
 
 }
