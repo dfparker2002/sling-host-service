@@ -119,19 +119,6 @@ public class RewriteRuleServiceImpl implements RewriteRuleService {
                     if (rowIterator != null) {
                         while (rowIterator.hasNext()) {
                             Row row = rowIterator.nextRow();
-                            /*
-                            String path = node.getParent().getPath();
-                            Resource resource = resourceResolver.resolve(path);
-                            ValueMap resourceProperties = resource.getValueMap();
-                            log.error("VM: {}", resourceProperties);
-                            String target = resourceProperties.get("sling:vanityPath", String.class);
-
-                            String mappedTarget = this.resourceResolver.map(target);
-                            if (mappedTarget != null) {
-                                target = mappedTarget;
-                            }
-                            this.vanityUrls.add(path + ":" + target);
-                            */
                             Node rowNode = row.getNode();
                             PropertyIterator propertyIterator = rowNode.getProperties();
                             while(propertyIterator != null && propertyIterator.hasNext()) {
