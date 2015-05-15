@@ -124,12 +124,14 @@ public class RewriteRuleServiceImpl implements RewriteRuleService {
                             while(propertyIterator != null && propertyIterator.hasNext()) {
                                 javax.jcr.Property property = propertyIterator.nextProperty();
                                 if (property.getName().equals("sling:vanityPath")) {
+                                    String path = rowNode.getParent().getPath();
                                     if (property.isMultiple()) {
                                         for(Value url : property.getValues()) {
-                                            this.vanityUrls.add(url + ":" + rowNode.getParent().getPath());
+                                            this.vanityUrls.add(buildMatchUrl(url.getString()) + ":" + path);
                                         }
                                     } else {
-                                        this.vanityUrls.add(property.getString() + ":" + rowNode.getParent().getPath());
+                                        /* There's only one property, so don't loop */
+                                        this.vanityUrls.add(buildMatchUrl(property.getString()) + ":" + path);
                                     }
                                 }
                             }
@@ -146,6 +148,23 @@ public class RewriteRuleServiceImpl implements RewriteRuleService {
         } finally {
             session.logout();
         }
+    }
+    
+    private String buildMatchUrl(String input) {
+        StringBuilder url = new StringBuilder();
+        if (input.charAt(0) != '^') {
+            /* Always prepend a start-of-match */
+            url.append('^');
+        }
+        int firstSlash = input.indexOf('/');
+        if (firstSlash >= 0 && firstSlash < 2) {
+            url.append(input);
+        } else {
+            url.append('/');
+            url.append(input);
+        }
+        
+        return url.toString();
     }
 
     private void buildMappedUrls() throws org.apache.sling.api.resource.LoginException {
